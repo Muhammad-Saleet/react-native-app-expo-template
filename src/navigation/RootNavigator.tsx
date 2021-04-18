@@ -1,9 +1,8 @@
-import * as React from 'react'
-import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
-import { NavigationManager, navigationRef } from './NavigationManager'
-import { useSelector } from 'react-redux'
-import { useEffect, useRef } from 'react'
+import React, { useEffect, useRef } from "react"
+import { NavigationContainer } from "@react-navigation/native"
+import { createStackNavigator } from "@react-navigation/stack"
+import { NavigationManager, navigationRef } from "./NavigationManager"
+import { useSelector } from "react-redux"
 import { AuthStack } from "./AuthStack"
 import { BottomTabs } from "./BottomTabs"
 import { LoadingView } from "../screens/loading/LoadingView"
@@ -25,7 +24,6 @@ export function RootNavigator () {
     } else {
         initialState = NavigationManager.predefinedStates.authState
     }
-
 
     useEffect(() => {
         if (showLoadingScreen) {
@@ -61,37 +59,37 @@ export function RootNavigator () {
             }
             onStateChange={logScreen}
         >
-          <RootStackNav.Navigator
-              mode="modal"
-              initialRouteName="AuthStack"
-          >
-              <RootStackNav.Screen
-                name="AuthStack"
-                component={AuthStack}
-                options={{
-                  headerShown: false,
-                  animationEnabled: false,
-                }}
-              />
+            <RootStackNav.Navigator
+                mode="modal"
+                initialRouteName="AuthStack"
+            >
+                <RootStackNav.Screen
+                    name="AuthStack"
+                    component={AuthStack}
+                    options={{
+                        headerShown: false,
+                        animationEnabled: false,
+                    }}
+                />
 
-            <RootStackNav.Screen
-              name="LoadingView"
-              component={LoadingView}
-              options={{
-                headerShown: false,
-                animationEnabled: false,
-              }}
-            />
+                <RootStackNav.Screen
+                    name="LoadingView"
+                    component={LoadingView}
+                    options={{
+                        headerShown: false,
+                        animationEnabled: false,
+                    }}
+                />
 
-            <RootStackNav.Screen
-              name="BottomTabs"
-              component={BottomTabs}
-              options={{
-                headerShown: false,
-                animationEnabled: false,
-              }}
-            />
-          </RootStackNav.Navigator>
+                <RootStackNav.Screen
+                    name="BottomTabs"
+                    component={BottomTabs}
+                    options={{
+                        headerShown: false,
+                        animationEnabled: false,
+                    }}
+                />
+            </RootStackNav.Navigator>
         </NavigationContainer>
     )
 }

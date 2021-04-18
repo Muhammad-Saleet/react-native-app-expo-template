@@ -1,6 +1,6 @@
-import React from 'react'
-import { useDispatch } from "react-redux";
-import {StyleSheet, Text, View} from "react-native";
+import React from "react"
+import { useDispatch } from "react-redux"
+import { StyleSheet, Text, View } from "react-native"
 import { Button } from "react-native-elements"
 import { removeToken } from "../../redux/slices/authSlice"
 
@@ -16,7 +16,7 @@ export function HomeView ({ navigation }) {
                 Home Tab
             </Text>
             <Button
-                title={'logout'}
+                title={"logout"}
                 onPress={handleLogout}
             />
         </View>
@@ -25,7 +25,7 @@ export function HomeView ({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: "center",
+        justifyContent: "center",
     },
-});
+})

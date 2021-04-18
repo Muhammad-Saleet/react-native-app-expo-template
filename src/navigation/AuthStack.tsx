@@ -1,6 +1,6 @@
-import * as React from 'react'
-import { createStackNavigator } from '@react-navigation/stack'
-import { LoginView } from '../screens/login/LoginView'
+import * as React from "react"
+import { createStackNavigator } from "@react-navigation/stack"
+import { LoginView } from "../screens/login/LoginView"
 
 export function AuthStack () {
     const AuthStackNav = createStackNavigator()
@@ -12,7 +12,7 @@ export function AuthStack () {
             <AuthStackNav.Screen
                 name="LoginView"
                 component={LoginView}
-                options={{ headerTitle: 'Login Screen', headerShown: true }}
+                options={{ headerTitle: "Login Screen", headerShown: true }}
             />
         </AuthStackNav.Navigator>
     )
