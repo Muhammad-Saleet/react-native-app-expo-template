@@ -27,5 +27,6 @@ module.exports = {
         "no-multiple-empty-lines": ["error", { max: 1 }],
         "no-trailing-spaces": "error",
         "require-await": "warn",
+        "arrow-parens": ["error", "always"],
     },
 }

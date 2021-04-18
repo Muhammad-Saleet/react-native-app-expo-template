@@ -11,13 +11,13 @@ const axiosInstance = axios.create({ baseURL })
 MockAdapter.add(axiosInstance, { onNoMatch: "passthrough" })
 
 // log every request made
-axiosInstance.interceptors.request.use(req => {
+axiosInstance.interceptors.request.use((req) => {
     console.log(`${req.method}:${req.url}`)
     return req
 })
 
 // add auth token to protected routes
-axiosInstance.interceptors.request.use(req => {
+axiosInstance.interceptors.request.use((req) => {
     if (req?.params?._protected) {
         delete req.params._protected // internal param; don't send to api
         const token = store.getState().auth.token
@@ -28,10 +28,10 @@ axiosInstance.interceptors.request.use(req => {
 
 // add error handling for generic errors
 axiosInstance.interceptors.response.use(
-    res => {
-        return { data: res.data }
+    (res) => {
+        return res
     },
-    err => {
+    (err) => {
         const requestUrl = `${err?.config?.method || ""}:${err?.config?.url || ""}`
 
         // request cancelled

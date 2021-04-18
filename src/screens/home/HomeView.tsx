@@ -1,46 +1,81 @@
-import React, { useEffect, ReactElement } from "react"
-import { useDispatch } from "react-redux"
-import { StyleSheet, Text, View } from "react-native"
-import { Button } from "react-native-elements"
-import { removeToken } from "../../redux/slices/authSlice"
+import React, { useEffect, ReactElement, useState } from "react"
+import { ActivityIndicator, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { Api } from "../../api/Api"
+import { useInfiniteQuery } from "react-query"
+import { Post } from "../../types"
 
 export function HomeView ():ReactElement {
-    const dispatch = useDispatch()
-    const handleLogout = () => {
-        dispatch(removeToken())
+    const limit = 10
+    const [posts, setPosts] = useState<Array<Post>>([])
+
+    const {
+        fetchNextPage,
+        isFetchingNextPage,
+        data,
+    } = useInfiniteQuery(
+        {
+            queryKey: ["posts", { userId: undefined, limit }],
+            queryFn: Api.listPosts,
+            getNextPageParam,
+        })
+
+    function getNextPageParam (lastPage) {
+        if (lastPage.data.length < limit) {
+            return undefined // to indicate that no more pages exists
+        }
+        return lastPage.pageParam + 1
     }
 
+    // squash the array of posts of every page into one array with all the posts
     useEffect(() => {
-        const listPost = async () => {
-            const { data } = await Api.listPosts()
-            console.log("post list --- ", JSON.stringify(data.slice(0, 5), null, 2))
-
+        if (data?.pages) {
+            const allPosts = data.pages.reduce((accumulator, currentPage) => accumulator.concat(currentPage.data), [])
+            setPosts(allPosts)
         }
+    }, [data])
 
-        const listPostFiltered = async () => {
-            const { data } = await Api.listPosts("4")
-            console.log("post list filtered --- ", JSON.stringify(data.slice(0, 5), null, 2))
+    function renderPostCard ({ item }: {item: Post}) {
+        return (
+            <View style={styles.cardContainer}>
+                <TouchableOpacity
+                    onPress={() => null}
+                    style={{ flex: 1 }}
+                >
+                    <Text>
+                        {item.id}
+                    </Text>
+                    <Text numberOfLines={1}>
+                        {item.title}
+                    </Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
 
+    function renderListFooter () {
+        if (isFetchingNextPage) {
+            return (
+                <ActivityIndicator size="large" color={"blue"}/>
+            )
         }
+        return (<View style={{ height: 40 }}/>)
+    }
 
-        const getPost = async () => {
-            const { data } = await Api.getPost("1")
-            console.log("post --- ", JSON.stringify(data, null, 2))
-        }
-        listPost()
-        getPost()
-        listPostFiltered()
-    }, [])
+    function renderEmpty () {
+        return (
+            <ActivityIndicator size="large" color={"blue"}/>
+        )
+    }
 
     return (
         <View style={styles.container}>
-            <Text>
-                Home Tab
-            </Text>
-            <Button
-                title={"logout"}
-                onPress={handleLogout}
+            <FlatList
+                data={posts}
+                renderItem={renderPostCard}
+                onEndReached={() => fetchNextPage()}
+                keyExtractor={(post) => post.id.toString()}
+                ListEmptyComponent={renderEmpty()}
+                ListFooterComponent={renderListFooter()}
             />
         </View>
     )
@@ -51,4 +86,13 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
+    cardContainer: {
+        marginVertical: 5,
+        marginHorizontal: 10,
+        paddingHorizontal: 10,
+        paddingVertical: 10,
+        borderWidth: 1,
+        borderRadius: 5,
+    },
 })
+
