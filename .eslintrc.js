@@ -1,4 +1,5 @@
 module.exports = {
+    env: { node: true },
     root: true,
     parser: "@typescript-eslint/parser",
     parserOptions: { ecmaFeatures: { jsx: true } },
@@ -25,5 +26,6 @@ module.exports = {
         "no-tabs": "error",
         "no-multiple-empty-lines": ["error", { max: 1 }],
         "no-trailing-spaces": "error",
+        "require-await": "warn",
     },
 }

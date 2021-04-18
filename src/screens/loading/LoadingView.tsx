@@ -1,7 +1,7 @@
-import React from "react"
+import React, { ReactElement } from "react"
 import { View, ActivityIndicator } from "react-native"
 
-export function LoadingView () {
+export function LoadingView ():ReactElement {
     return (
         <View style={{
             flex: 1,
